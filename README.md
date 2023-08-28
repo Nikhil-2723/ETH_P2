@@ -1,7 +1,6 @@
 
 # Smart Contract Managment
-This repository contains a Solidity smart contract called BankATM which provides basic banking functionalities like deposit, withdraw, and getting the account balance. The contract also includes a frontend implementation to interact with the contract on the Ethereum blockchain.
-
+This repository includes a Solidity smart contract named BankATM that offers fundamental banking services like deposits, withdrawals, and account balance retrieval. A frontend solution for interacting with the contract on the Ethereum blockchain is also included in the contract.
 
 
 
@@ -10,10 +9,10 @@ This repository contains a Solidity smart contract called BankATM which provides
 ## Contract Functionality
 
 
-BankATM Smart Contract
-This repository contains a Solidity smart contract called BankATM which provides basic banking functionalities like deposit, withdraw, and getting the account balance. The contract also includes a frontend implementation to interact with the contract on the Ethereum blockchain.
+Smart Contract for BankATM
+This repository includes a Solidity smart contract named BankATM that offers fundamental banking services like deposits, withdrawals, and account balance retrieval. A frontend solution for interacting with the contract on the Ethereum blockchain is also included in the contract.
 
-Smart Contract Details
+Details about Smart Contract 
 The BankATM contract has the following functions:
 
 1. deposit(uint256 _amount): Allows the owner to deposit Ether into the account.
@@ -21,11 +20,9 @@ The BankATM contract has the following functions:
 3. getBalance(): Returns the current account balance.
 4. getOwner(): Returns the address of the account owner.
 ## DEPLOYMENT
-Create a hardhat project and write the contract in it and then run your blockchain connect and deoloy it with goerli testnet
-now write the code for frontend and connect backend with frontend with help of the artifacts abi
-Now run the fronted and check all the functionality 
-
-Note: Every DEPLOYMENT you have a new contract address change it in the contract adress column in fronted
+Create a hardhat project, add a contract to it, run your blockchain through Goerli Testnet, and then write the code for the front end and connect the back end with the front end using the artefacts abi.
+Run the fronted now and verify all capability. 
+Also, if your contract address changes during a DEPLOYMENT, update it in the contract address field in front.
 ## Install
 hardhat installation
 
@@ -55,4 +52,4 @@ hardhat installation
 
 
 ## Author
-Kuldeep Yadav
+Nikhil Upadhyay
