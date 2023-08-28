@@ -10,6 +10,7 @@ This repository includes a Solidity smart contract named BankATM that offers fun
 
 
 Smart Contract for BankATM
+
 This repository includes a Solidity smart contract named BankATM that offers fundamental banking services like deposits, withdrawals, and account balance retrieval. A frontend solution for interacting with the contract on the Ethereum blockchain is also included in the contract.
 
 Details about Smart Contract 
