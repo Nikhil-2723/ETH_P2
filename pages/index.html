@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Contract Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            /* Replace 'your-image-url-here' with your actual image URL */
+            background-image: url('/coins-1726618_1280\ \(1\).jpg');
+            background-size: cover;
+        }
+
+        #header {
+            text-align: right;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            color: black;
+            border: 2px solid black;
+            padding: 10px;
+            display: inline-block;
+            border-radius: 5px;
+        }
+
+        nav {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        nav h2 {
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .section {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid black;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        input[type="number"] {
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: red;
+            color: white;
+        }
+
+        button:hover {
+            background-color: darkred;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: black;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>ATM Contract Interface</h1>
+    </div>
+
+    <nav>
+        <h2>Bank Name</h2>
+    </nav>
+
+    <div class="container">
+        <div>
+            <h2>Your Address: <span id="userAddress"></span></h2>
+            <h2>Contact Address: <span id="contractAddress"></span></h2>
+            <h2>Your Balance: <span id="userBalance"></span> ETH</h2>
+        </div>
+
+        <div class="section">
+            <h3>Deposit Balance</h3>
+            <input type="number" id="depositAmount" placeholder="Enter amount">
+            <button onclick="deposit()">Deposit</button>
+        </div>
+
+        <div class="section">
+            <h3>Withdraw Balance</h3>
+            <input type="number" id="withdrawAmount" placeholder="Enter amount">
+            <button onclick="withdraw()">Withdraw</button>
+        </div>
+
+        <div class="section">
+            <h3>Show Balance</h3>
+            <button onclick="showBalance()">Show Balance</button>
+            <p id="balanceDisplay"></p>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2023 Bank Name. All rights reserved.
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.3/dist/web3.min.js"></script>
+    <script>
+        let web3;
+        let contract;
+
+        async function initWeb3() {
+            if (typeof window.ethereum !== 'undefined') {
+                web3 = new Web3(window.ethereum);
+                await window.ethereum.enable();
+
+                // Replace with your contract address and ABI
+                const contractAddress ='0xDd1e6296816ADc86dc3484f9525c3649355D9505';
+    const contractAbi = [
+		{
+		  "inputs": [],
+		  "stateMutability": "nonpayable",
+		  "type": "constructor"
+		},
+		{
+		  "anonymous": false,
+		  "inputs": [
+			{
+			  "indexed": true,
+			  "internalType": "address",
+			  "name": "account",
+			  "type": "address"
+			},
+			{
+			  "indexed": false,
+			  "internalType": "uint256",
+			  "name": "amount",
+			  "type": "uint256"
+			}
+		  ],
+		  "name": "BalanceBurned",
+		  "type": "event"
+		},
+		{
+		  "anonymous": false,
+		  "inputs": [
+			{
+			  "indexed": true,
+			  "internalType": "address",
+			  "name": "account",
+			  "type": "address"
+			},
+			{
+			  "indexed": false,
+			  "internalType": "uint256",
+			  "name": "amount",
+			  "type": "uint256"
+			}
+		  ],
+		  "name": "BalanceDeposited",
+		  "type": "event"
+		},
+		{
+		  "anonymous": false,
+		  "inputs": [
+			{
+			  "indexed": true,
+			  "internalType": "address",
+			  "name": "account",
+			  "type": "address"
+			},
+			{
+			  "indexed": false,
+			  "internalType": "uint256",
+			  "name": "amount",
+			  "type": "uint256"
+			}
+		  ],
+		  "name": "BalanceWithdrawn",
+		  "type": "event"
+		},
+		{
+		  "inputs": [
+			{
+			  "internalType": "uint256",
+			  "name": "amount",
+			  "type": "uint256"
+			}
+		  ],
+		  "name": "burnBalance",
+		  "outputs": [],
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+		},
+		{
+		  "inputs": [],
+		  "name": "depositBalance",
+		  "outputs": [],
+		  "stateMutability": "payable",
+		  "type": "function"
+		},
+		{
+		  "inputs": [],
+		  "name": "getContractBalance",
+		  "outputs": [
+			{
+			  "internalType": "uint256",
+			  "name": "",
+			  "type": "uint256"
+			}
+		  ],
+		  "stateMutability": "view",
+		  "type": "function"
+		},
+		{
+		  "inputs": [],
+		  "name": "showBalance",
+		  "outputs": [
+			{
+			  "internalType": "uint256",
+			  "name": "",
+			  "type": "uint256"
+			}
+		  ],
+		  "stateMutability": "view",
+		  "type": "function"
+		},
+		{
+		  "inputs": [
+			{
+			  "internalType": "uint256",
+			  "name": "amount",
+			  "type": "uint256"
+			}
+		  ],
+		  "name": "withdrawBalance",
+		  "outputs": [],
+		  "stateMutability": "nonpayable",
+		  "type": "function"
+		}
+	  ];
+
+
+                contract = new web3.eth.Contract(contractAbi, contractAddress);
+
+                const accounts = await web3.eth.getAccounts();
+                const userAddress = accounts[0];
+
+                updateAddresses(userAddress, contractAddress);
+            } else {
+                console.log("Web3 not found. Please install MetaMask.");
+            }
+        }
+
+        async function updateAddresses(userAddress, contractAddress) {
+            document.getElementById('userAddress').textContent = userAddress;
+            document.getElementById('contractAddress').textContent = contractAddress;
+        }
+
+        async function deposit() {
+            const depositAmount = document.getElementById('depositAmount').value;
+            if (!depositAmount) return;
+
+            const accounts = await web3.eth.getAccounts();
+            const userAddress = accounts[0];
+
+            await contract.methods.depositBalance().send({
+                from: userAddress,
+                value: web3.utils.toWei(depositAmount, 'ether')
+            });
+
+            showBalance();
+        }
+
+        async function withdraw() {
+            const withdrawAmount = document.getElementById('withdrawAmount').value;
+            if (!withdrawAmount) return;
+
+            const accounts = await web3.eth.getAccounts();
+            const userAddress = accounts[0];
+
+            await contract.methods.withdrawBalance(web3.utils.toWei(withdrawAmount, 'ether')).send({ from: userAddress });
+
+            showBalance();
+        }
+
+        async function showBalance() {
+            const accounts = await web3.eth.getAccounts();
+            const userAddress = accounts[0];
+
+            const balance = await contract.methods.showBalance().call({ from: userAddress });
+            document.getElementById('userBalance').textContent = web3.utils.fromWei(balance, 'ether');
+            document.getElementById('balanceDisplay').textContent = `Your balance is: ${web3.utils.fromWei(balance, 'ether')} ETH`;
+        }
+
+        window.addEventListener('load', async () => {
+            await initWeb3();
+        });
+    </script>
+</body>
+</html>
