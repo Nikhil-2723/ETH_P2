@@ -61,4 +61,7 @@ Also, if your contract address changes during a DEPLOYMENT, update it in the con
 
 
 ## Author
-Nikhil Upadhyay
+Nikhil Upadhyay 
+
+## License
+This project is licensed under the MIT License
